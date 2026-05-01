@@ -1,0 +1,147 @@
+{
+  "date": "2026-05-02",
+  "posts": [
+    {
+      "id": "2026-05-02-uber-claude-code",
+      "kind": "news",
+      "source": "Hacker News",
+      "title": "Uber blew its entire 2026 AI budget on Claude Code in 4 months",
+      "url": "https://www.briefs.co/news/uber-torches-entire-2026-ai-budget-on-claude-code-in-four-months/",
+      "bullets": [
+        "Uber's full 2026 AI budget is gone, four months into the year, mostly spent on Claude Code (Anthropic) and Cursor.",
+        "Some engineers were ringing up $500 to $2,000 a month in API charges. Even at the high end, that is a fraction of an Uber engineer's salary, but it adds up across thousands of seats.",
+        "95% of Uber engineers now use AI tools every month, and 70% of code that gets shipped originates from AI. That ratio was effectively zero in 2023.",
+        "Claude Code adoption doubled in two months after the December 2025 rollout, which is why the budget broke. Procurement assumed slower uptake.",
+        "Why it matters: Uber's annual R&D spend is $3.4B. AI tooling has gone from a line item to one of the larger ones, and other big employers (Google, Meta, Amazon) are running similar pilots. Expect tooling-cost surprises across the industry through 2026."
+      ]
+    },
+    {
+      "id": "2026-05-02-opus-47-kelsey",
+      "kind": "news",
+      "source": "Hacker News",
+      "title": "Claude Opus 4.7 can identify writers from 100 words, even old unpublished ones",
+      "url": "https://www.theargumentmag.com/p/i-can-never-talk-to-an-ai-anonymously",
+      "bullets": [
+        "Opus 4.7 identified writer Kelsey Piper from a 125-word passage with no quoted material, no proper nouns from her usual beat, and no obvious tells.",
+        "It also matched her unpublished school progress report (a totally different register), a movie review outside her beat, and a college application essay from 15 years ago when her style was different.",
+        "The technique is stylometry: idiosyncratic patterns in word choice, sentence rhythm, and punctuation that fingerprint a writer. Frontier LLMs do this implicitly because they have read enough of you to model your style.",
+        "Practical implication: pseudonymous online writing is no longer private from anyone with an LLM and the original author's published work as a reference set. This applies to whistleblowers, anonymous bloggers, and people writing under aliases on forums.",
+        "Counter-tactics that don't work: changing topic, register, or decade. The model picks you up across all of them. The only known defense is paraphrasing through a different model before posting."
+      ]
+    },
+    {
+      "id": "2026-05-02-ai-water-california",
+      "kind": "news",
+      "source": "Hacker News",
+      "title": "AI's water problem is way smaller than the internet thinks",
+      "url": "https://californiawaterblog.com/2026/04/26/ai-water-use-distractions-and-lessons-for-california/",
+      "bullets": [
+        "California's data centers cover about 340 acres of floor space, total. That is small relative to almost any other industrial use of land.",
+        "All AI compute in the state uses roughly 0.055% of California's annual human water use. The state uses ~40 million acre-feet a year; data centers use about 20,000 acre-feet at the most defensible estimate.",
+        "Why people think the number is huge: viral 2024 reports cited evaporation losses of up to 400,000 acre-feet, but that estimate assumed worst-case cooling tech and old hyperscaler designs. New facilities mostly use closed-loop or air cooling.",
+        "The numbers are also disputed because there is no public reporting requirement. Estimates from four different LLMs converged near 20,000 acre-feet, which is a useful sanity check, not proof.",
+        "Why it matters: water is the wrong fight. California's actual constraint is power and grid interconnection time. AI water use is a rounding error next to almonds, alfalfa, or municipal use."
+      ]
+    },
+    {
+      "id": "2026-05-02-rightscon-zambia",
+      "kind": "news",
+      "source": "Hacker News",
+      "title": "China pressured Zambia to cancel the world's biggest digital rights conference",
+      "url": "https://www.rightscon.org/rc26-statement/",
+      "bullets": [
+        "RightsCon is the largest annual gathering of digital rights workers, hosting 8,000+ attendees from civil society, government, and big tech each year.",
+        "Chinese diplomats pressured Zambia because Taiwanese civil society groups had been invited, the same playbook China has run at UN bodies and the WHO.",
+        "Zambia announced the cancellation at 9:33pm local time via state-owned media, with no prior notice to organizer Access Now. Travelers landing in Lusaka were told by immigration officers it was off, before any official announcement.",
+        "Officials privately offered to let the event proceed if organizers (a) excluded the Taiwanese groups and (b) 'moderated' specific sessions. Access Now refused.",
+        "Why it matters: this is the first time a sitting government has effectively executed a Beijing veto over a global civil society event. It widens the China-Taiwan diplomatic conflict from official forums to nominally independent ones, and creates a venue-shopping problem for any future global tech-policy gathering."
+      ]
+    },
+    {
+      "id": "2026-05-02-whatcable",
+      "kind": "tool",
+      "source": "Hacker News",
+      "title": "WhatCable: a tiny Mac app that finally tells you what your USB-C cable can do",
+      "url": "https://github.com/darrylmorley/whatcable",
+      "bullets": [
+        "USB-C is one connector covering wildly different cables. The same plug can mean USB 2.0 (480 Mbps) or Thunderbolt 4 (40 Gbps), 3A or 5A, 60W or 240W.",
+        "Modern USB-C cables contain a tiny chip called an e-marker that reports their actual capabilities. Your laptop already reads it, but no consumer OS surfaces the info.",
+        "WhatCable lives in your Mac menu bar and shows: speed (USB 2.0, 5/10/20/40/80 Gbps), current rating, every voltage profile the charger advertises (5V, 9V, 12V, 15V, 20V) with the negotiated one highlighted, and which transports are active (USB 2/3, Thunderbolt, DisplayPort).",
+        "It also identifies the device on the other end by vendor and product type, decoded from the USB-PD Discover Identity response.",
+        "Why it matters: a $5 cable that looks identical to a $80 cable will silently throttle your charger and external display. This is the first widely available tool that makes the difference visible without buying lab gear."
+      ]
+    },
+    {
+      "id": "2026-05-02-vouching-llm-spam",
+      "kind": "project",
+      "source": "Lobsters",
+      "title": "Fighting LLM spam with a small web of trust",
+      "url": "https://blog.tangled.org/vouching/",
+      "bullets": [
+        "Tangled is a code-hosting platform built on AT Protocol (the same backbone as Bluesky), where each user owns the data attached to their identity.",
+        "It now lets users vouch for or denounce other users with a green shield or red mark, plus an optional written reason.",
+        "Why: AI-generated PRs and comments that look correct but contain subtle errors (the 'uncanny valley' of code review) are eating maintainers' time across open source.",
+        "Vouches live as public records on each user's personal data server, not on Tangled's servers. So they are portable, deletable, and survive Tangled itself shutting down.",
+        "You only see vouch badges from people you have vouched for directly, or one hop away. This is a deliberate echo of PGP's web of trust, designed to keep the trust graph small and meaningful instead of a global reputation score.",
+        "Why it matters: GitHub's response to AI spam has been heuristics and CAPTCHAs that hit real contributors. Web-of-trust is a different bet: trust people who've earned trust from people you trust, not algorithms."
+      ]
+    },
+    {
+      "id": "2026-05-02-dont-vibe-code",
+      "kind": "opinion",
+      "source": "Lobsters",
+      "title": "An engineer explains why he refuses to 'vibe code'",
+      "url": "https://jacobharr.is/personal/i-dont-vibe-code",
+      "bullets": [
+        "'Vibe coding' (term coined by Andrej Karpathy) means writing software by describing what you want to an LLM and accepting most of what it produces, without reviewing every line.",
+        "The author stopped paying for AI coding tools the moment his free credits ran out. He says he didn't miss them.",
+        "Core argument: LLMs reduce 'accidental complexity' (typing, boilerplate, syntax). They don't reduce 'essential complexity' (the actual hard part: designing systems that don't rot, debugging unknown failure modes, naming things well). Fred Brooks made this distinction in 1986 and it still holds.",
+        "Friction in coding, he argues, is a useful signal. When something is hard to write, that often means your design is wrong. AI hides the signal by making everything feel easy.",
+        "He works in civic tech, where bugs cause real people to lose access to government benefits. He doesn't want a system that can't be held accountable for what it produces.",
+        "Counterpoint to consider: the same argument was made about IDEs, autocomplete, Stack Overflow, and copy-paste. Each time, the floor for 'good enough' rose. The question is whether LLMs are continuous with that or qualitatively different."
+      ]
+    },
+    {
+      "id": "2026-05-02-my-own-github",
+      "kind": "opinion",
+      "source": "Lobsters",
+      "title": "If I could redesign GitHub from scratch",
+      "url": "https://matduggan.com/if-i-could-make-my-own-github/",
+      "bullets": [
+        "Code review should happen before you push, not after. Tools like Gerrit and Phabricator do this; GitHub's PR-after-push model is the outlier, not the default.",
+        "Pull request approval should have shades like 'looks fine', 'good enough for now', 'fully signed off'. GitHub collapses all of those into one binary thumbs-up, which loses information teams actually use.",
+        "GitHub's default of 'two reviewers required on everything' is a one-size-fits-all that mismatches how most teams actually work. A typo fix and a database migration shouldn't need the same gate.",
+        "Every new GitHub feature is a tax on people who don't use it but still see it in menus, in onboarding, in their notifications. Big platforms tend to add features and never remove them.",
+        "Why this is interesting: most teams blame their workflow, not their tool. The piece argues GitHub's defaults silently shape how 100M+ developers work, and that nobody questions defaults that have been there for 17 years."
+      ]
+    },
+    {
+      "id": "2026-05-02-miyamoto-coder",
+      "kind": "opinion",
+      "source": "Lobsters",
+      "title": "Shigeru Miyamoto probably never compiled a line of code, and is still a better coder than most",
+      "url": "https://indiepixel.de/blog/posts/shigeru-miyamoto-has-probably-never-compiled-a-line-of-code-in-his-life-and-is-still-a-better-coder-than-most-of-you/",
+      "bullets": [
+        "The author splits coding into three levels: syntax (typing the code), flow (how the pieces connect), and architecture (the big system design). The industry hires and tests almost entirely for syntax.",
+        "Miyamoto designed Mario, Zelda, and the systems behind them — physics rules, control schemes, level grammar — without writing the code himself. That's pure architecture-level work.",
+        "Same with Gunpei Yokoi, who designed the D-pad, Game & Watch, and Game Boy. His philosophy was 'lateral thinking with withered technology': ship cheap, simple parts in unexpected combinations. The Game Boy used a dim LCD that competitors had abandoned, and outsold every rival.",
+        "The pitch: AI is now eating the syntax level. Anyone who can describe what they want gets working code. The valuable humans are the ones who can think at the architecture level — the level that hiring loops barely test.",
+        "Why it matters for students: optimize for taste and judgment, not LeetCode. The skill that LLMs amplify is knowing what to build; the skill they replace is typing it out."
+      ]
+    },
+    {
+      "id": "2026-05-02-sally-mckee",
+      "kind": "obituary",
+      "source": "Hacker News",
+      "title": "The researcher who named the 'memory wall' has died",
+      "url": "https://www.online-tribute.com/SallyMcKee",
+      "bullets": [
+        "Sally McKee co-wrote the 1994 paper 'Hitting the Memory Wall: Implications of the Obvious' with Wm. Wulf. It coined the term and predicted CPU performance would become limited by memory bandwidth, not compute.",
+        "The prediction was unpopular at the time. CPUs were doubling in speed every 18 months and DRAM was not. The paper argued that mismatch would dominate computer design. It did.",
+        "Three decades later, the memory wall is why GPUs use HBM (stacked DRAM glued to the chip), why CPU caches keep growing, and why memory bandwidth (not FLOPs) gates AI training speed.",
+        "She held the C. Tycho Howle Chair in Collaborative Computing Environments at Clemson until 2021, with earlier roles at Cornell, Utah, and Sweden's Chalmers University.",
+        "Why it matters: students learning systems still hit the memory wall the moment they try to go fast. McKee named the thing that has shaped chip design more than any other constraint of the last 30 years."
+      ]
+    }
+  ]
+}

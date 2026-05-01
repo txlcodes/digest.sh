@@ -16,7 +16,7 @@ const newsreader = Newsreader({
 });
 
 export const metadata: Metadata = {
-  title: "Digest — 10 things a day. Then it's done.",
+  title: "Digest. 10 things a day. Then it's done.",
   description:
     "A curated daily digest for builders. 10 posts tailored to you, delivered once a day. No infinite scroll. No feed.",
 };
