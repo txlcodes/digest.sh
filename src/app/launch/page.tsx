@@ -24,12 +24,12 @@ function Typewriter({ words = ROTATING }: { words?: string[] }) {
       }
       const t = setTimeout(
         () => setText(target.slice(0, text.length + 1)),
-        110 + Math.random() * 40,
+        70 + Math.random() * 30,
       );
       return () => clearTimeout(t);
     }
     if (phase === "pausing") {
-      const t = setTimeout(() => setPhase("deleting"), 1400);
+      const t = setTimeout(() => setPhase("deleting"), 700);
       return () => clearTimeout(t);
     }
     if (phase === "deleting") {
@@ -38,7 +38,7 @@ function Typewriter({ words = ROTATING }: { words?: string[] }) {
         setPhase("typing");
         return;
       }
-      const t = setTimeout(() => setText(text.slice(0, -1)), 60);
+      const t = setTimeout(() => setText(text.slice(0, -1)), 35);
       return () => clearTimeout(t);
     }
   }, [text, phase, wordIdx, words]);
@@ -60,13 +60,10 @@ function SoundtrackEngine({ src }: { src: string }) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [started, setStarted] = useState(false);
   const [playing, setPlaying] = useState(false);
-  const playingRef = useRef(false);
+  // Scroll runs independently of audio — once launched, it scrolls even if
+  // the browser blocks audio. Manual override + completion still apply.
+  const scrollingRef = useRef(false);
   const manualOverrideUntilRef = useRef<number>(0);
-
-  // Keep a ref in sync with state so the rAF tick always reads the latest.
-  useEffect(() => {
-    playingRef.current = playing;
-  }, [playing]);
 
   useEffect(() => {
     const a = audioRef.current;
@@ -102,9 +99,9 @@ function SoundtrackEngine({ src }: { src: string }) {
     };
   }, []);
 
-  // Hero holds for 8s so the typewriter can cycle all 3 words (~2.5s each)
-  // before auto-scroll begins. Then 48s of linear scroll across the rest.
-  const HERO_HOLD_MS = 8000;
+  // Hero holds for 4s — long enough for the typewriter to cycle all 3
+  // words. Then 48s of linear scroll across the remaining 7 scenes.
+  const HERO_HOLD_MS = 4000;
   const AUTO_SCROLL_MS = 48000;
   const scrollStartRef = useRef<number>(0);
   const scrollFinishedRef = useRef<boolean>(false);
@@ -160,7 +157,7 @@ function SoundtrackEngine({ src }: { src: string }) {
     let rafId = 0;
     const tick = () => {
       if (
-        playingRef.current &&
+        scrollingRef.current &&
         scrollStartRef.current > 0 &&
         !scrollFinishedRef.current &&
         Date.now() >= manualOverrideUntilRef.current
@@ -189,20 +186,26 @@ function SoundtrackEngine({ src }: { src: string }) {
   }, []);
 
   const launch = async () => {
+    // Reset + start scroll FIRST — independent of audio. Even if the browser
+    // blocks audio for any reason, the experience still plays.
+    document.documentElement.style.scrollBehavior = "auto";
+    window.scrollTo(0, 0);
+    manualOverrideUntilRef.current = 0;
+    scrollStartRef.current = Date.now();
+    scrollFinishedRef.current = false;
+    scrollingRef.current = true;
+    setStarted(true);
+
+    // Audio is best-effort.
     const a = audioRef.current;
-    if (!a) return;
-    try {
-      a.currentTime = 0;
-      document.documentElement.style.scrollBehavior = "auto";
-      window.scrollTo(0, 0);
-      manualOverrideUntilRef.current = 0;
-      scrollStartRef.current = Date.now();
-      scrollFinishedRef.current = false;
-      await a.play();
-      setPlaying(true);
-      setStarted(true);
-    } catch {
-      setPlaying(false);
+    if (a) {
+      try {
+        a.currentTime = 0;
+        await a.play();
+        setPlaying(true);
+      } catch {
+        setPlaying(false);
+      }
     }
   };
 
@@ -225,10 +228,13 @@ function SoundtrackEngine({ src }: { src: string }) {
   const replay = () => {
     scrollStartRef.current = Date.now();
     scrollFinishedRef.current = false;
+    scrollingRef.current = true;
+    manualOverrideUntilRef.current = 0;
     document.documentElement.style.scrollBehavior = "auto";
     window.scrollTo(0, 0);
     if (audioRef.current) {
       audioRef.current.currentTime = 0;
+      audioRef.current.volume = 0.35;
       void audioRef.current.play();
       setPlaying(true);
     }
