@@ -1255,11 +1255,29 @@ export default function LandingPage() {
                   <div className="flex-1 p-6 flex flex-col">
                     {/* All-done hero */}
                     <div className="text-center pt-2">
-                      <div className="inline-flex items-center justify-center w-12 h-12 rounded-full border-2 border-stone-900 mb-4">
-                        <span className="text-stone-900 text-lg leading-none">
+                      <motion.div
+                        initial={{ scale: 0.6, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{
+                          duration: 0.6,
+                          ease: [0.22, 1, 0.36, 1],
+                          delay: 0.1,
+                        }}
+                        className="inline-flex items-center justify-center w-12 h-12 rounded-full border-2 border-stone-900 mb-4"
+                      >
+                        <motion.span
+                          initial={{ scale: 0, rotate: -90 }}
+                          animate={{ scale: 1, rotate: 0 }}
+                          transition={{
+                            duration: 0.5,
+                            ease: [0.22, 1, 0.36, 1],
+                            delay: 0.4,
+                          }}
+                          className="text-stone-900 text-lg leading-none inline-block"
+                        >
                           ✓
-                        </span>
-                      </div>
+                        </motion.span>
+                      </motion.div>
                       <h2 className="font-serif text-[28px] leading-[1.1] text-on-surface mb-2">
                         You&rsquo;re <span className="serif-italic">caught up.</span>
                       </h2>
@@ -1276,8 +1294,15 @@ export default function LandingPage() {
                     </span>
                     <ul className="space-y-2.5 flex-1">
                       {(digest?.posts ?? []).slice(0, 4).map((p, i) => (
-                        <li
+                        <motion.li
                           key={p.id}
+                          initial={{ opacity: 0, x: -8 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{
+                            duration: 0.5,
+                            delay: 0.15 + i * 0.08,
+                            ease: [0.22, 1, 0.36, 1],
+                          }}
                           className="flex items-start gap-2.5 text-[12px] leading-snug text-stone-800"
                         >
                           <span className="text-stone-400 font-mono text-[10px] mt-0.5 flex-shrink-0">
@@ -1286,7 +1311,7 @@ export default function LandingPage() {
                           <span className="font-medium line-clamp-2">
                             {p.title}
                           </span>
-                        </li>
+                        </motion.li>
                       ))}
                       {!digest && (
                         <>
