@@ -5,65 +5,19 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import type { Digest } from "@/lib/types";
 
-const ROTATING = ["tech", "design", "AI"];
-
-// ---------- Typewriter ---------- //
-function Typewriter({ words = ROTATING }: { words?: string[] }) {
-  const [wordIdx, setWordIdx] = useState(0);
-  const [text, setText] = useState("");
-  const [phase, setPhase] = useState<"typing" | "pausing" | "deleting">(
-    "typing",
-  );
-
-  useEffect(() => {
-    const target = words[wordIdx];
-    if (phase === "typing") {
-      if (text === target) {
-        const t = setTimeout(() => setPhase("pausing"), 0);
-        return () => clearTimeout(t);
-      }
-      const t = setTimeout(
-        () => setText(target.slice(0, text.length + 1)),
-        70 + Math.random() * 30,
-      );
-      return () => clearTimeout(t);
-    }
-    if (phase === "pausing") {
-      const t = setTimeout(() => setPhase("deleting"), 700);
-      return () => clearTimeout(t);
-    }
-    if (phase === "deleting") {
-      if (text === "") {
-        setWordIdx((i) => (i + 1) % words.length);
-        setPhase("typing");
-        return;
-      }
-      const t = setTimeout(() => setText(text.slice(0, -1)), 35);
-      return () => clearTimeout(t);
-    }
-  }, [text, phase, wordIdx, words]);
-
-  return (
-    <span className="inline-block whitespace-nowrap">
-      {text}
-      <span
-        aria-hidden
-        className="inline-block w-[3px] bg-white ml-2 animate-pulse"
-        style={{ height: "0.85em", verticalAlign: "-0.08em" }}
-      />
-    </span>
-  );
-}
+// (Typewriter removed — replaced with static hero text below.)
 
 // ---------- Soundtrack + auto-scroll engine ---------- //
 function SoundtrackEngine({ src }: { src: string }) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [started, setStarted] = useState(false);
   const [playing, setPlaying] = useState(false);
-  // Scroll runs independently of audio — once launched, it scrolls even if
-  // the browser blocks audio. Manual override + completion still apply.
   const scrollingRef = useRef(false);
+  const scrollStartRef = useRef<number>(0);
   const manualOverrideUntilRef = useRef<number>(0);
+
+  // Total auto-scroll duration once launched.
+  const AUTO_SCROLL_MS = 50000;
 
   useEffect(() => {
     const a = audioRef.current;
@@ -99,14 +53,10 @@ function SoundtrackEngine({ src }: { src: string }) {
     };
   }, []);
 
-  // Hero holds for 4s — long enough for the typewriter to cycle all 3
-  // words. Then 48s of linear scroll across the remaining 7 scenes.
-  const HERO_HOLD_MS = 4000;
-  const AUTO_SCROLL_MS = 48000;
-  const scrollStartRef = useRef<number>(0);
   const scrollFinishedRef = useRef<boolean>(false);
 
-  // Manual scroll detection: pauses auto-scroll for 4s after wheel/touch/key.
+  // Manual scroll detection: extends the current scene's hold by 4s
+  // each time the user wheels/touches/uses keys.
   useEffect(() => {
     const bump = () => {
       manualOverrideUntilRef.current = Date.now() + 4000;
@@ -151,8 +101,8 @@ function SoundtrackEngine({ src }: { src: string }) {
     requestAnimationFrame(step);
   };
 
-  // rAF loop: drive scroll over a fixed window once the user has launched.
-  // Runs once on mount; reads playing state via ref so it always sees latest.
+  // rAF loop: drive scroll linearly from 0 to maxScroll over AUTO_SCROLL_MS.
+  // Scroll runs unconditionally once launched — independent of audio.
   useEffect(() => {
     let rafId = 0;
     const tick = () => {
@@ -163,9 +113,7 @@ function SoundtrackEngine({ src }: { src: string }) {
         Date.now() >= manualOverrideUntilRef.current
       ) {
         const elapsed = Date.now() - scrollStartRef.current;
-        // Hold at the top during the hero hold window, then linear scroll.
-        const adjusted = Math.max(0, elapsed - HERO_HOLD_MS);
-        const ratio = Math.min(adjusted / AUTO_SCROLL_MS, 1);
+        const ratio = Math.min(elapsed / AUTO_SCROLL_MS, 1);
         const max =
           document.documentElement.scrollHeight - window.innerHeight;
         const target = Math.round(ratio * max);
@@ -175,7 +123,6 @@ function SoundtrackEngine({ src }: { src: string }) {
         document.documentElement.style.scrollBehavior = prev;
         if (ratio >= 1) {
           scrollFinishedRef.current = true;
-          // Fade audio out over 2 seconds as the CTA scene lands.
           fadeOutAudio(2000);
         }
       }
@@ -186,21 +133,21 @@ function SoundtrackEngine({ src }: { src: string }) {
   }, []);
 
   const launch = async () => {
-    // Reset + start scroll FIRST — independent of audio. Even if the browser
-    // blocks audio for any reason, the experience still plays.
+    // Start scroll FIRST — independent of audio.
     document.documentElement.style.scrollBehavior = "auto";
     window.scrollTo(0, 0);
     manualOverrideUntilRef.current = 0;
-    scrollStartRef.current = Date.now();
     scrollFinishedRef.current = false;
+    scrollStartRef.current = Date.now();
     scrollingRef.current = true;
     setStarted(true);
 
-    // Audio is best-effort.
+    // Audio is best-effort — experience plays even if blocked.
     const a = audioRef.current;
     if (a) {
       try {
         a.currentTime = 0;
+        a.volume = 0.35;
         await a.play();
         setPlaying(true);
       } catch {
@@ -226,10 +173,10 @@ function SoundtrackEngine({ src }: { src: string }) {
   };
 
   const replay = () => {
-    scrollStartRef.current = Date.now();
     scrollFinishedRef.current = false;
-    scrollingRef.current = true;
     manualOverrideUntilRef.current = 0;
+    scrollStartRef.current = Date.now();
+    scrollingRef.current = true;
     document.documentElement.style.scrollBehavior = "auto";
     window.scrollTo(0, 0);
     if (audioRef.current) {
@@ -546,10 +493,7 @@ export default function LaunchPage() {
             Ten minutes a day.
             <br />
             <span className="text-white/60">Updated with the </span>
-            <span className="text-white">
-              <Typewriter />
-            </span>
-            <span className="text-white/60"> world.</span>
+            <span className="serif-italic text-white">tech world.</span>
           </h1>
           <motion.p
             initial={{ opacity: 0 }}
